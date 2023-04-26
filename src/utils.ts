@@ -23,9 +23,6 @@ export async function graphqlQuery(url: string, query) {
   return responseData;
 }
 
-export function subgraphError(res, error: null | string = null, errors = []) {
-  if (error) return res.status(500).json({ errors: [{ message: error }] });
-  return res.status(500).json({
-    errors
-  });
+export function subgraphError(res, error: null | string = null) {
+  return res.status(500).json({ errors: [{ message: error }] });
 }

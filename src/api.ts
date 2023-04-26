@@ -53,22 +53,17 @@ router.post('/*', async (req, res) => {
     }
   }
 
-  let result;
   try {
-    result = await graphqlQuery(url, str);
-    if (result.errors) {
-      return subgraphError(res, null, result.errors);
-    }
+    const result = await graphqlQuery(url, str);
+    if (result.errors) return res.status(500).json(result);
+    if (result?.data && caching) set(key, result).then(() => console.log('Cache stored', { key }));
+
+    return res.json(result);
   } catch (error: any) {
+    // in cases like network error or text response
     console.log(`subgraphRequest Error: ${error.message}`);
     return subgraphError(res, `subgraphRequest Error: ${error.message}`);
   }
-
-  if (result?.data && caching) {
-    set(key, result).then(() => console.log('Cache stored', { key }));
-  }
-
-  return res.json(result);
 });
 
 export default router;

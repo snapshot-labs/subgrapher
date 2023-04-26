@@ -1,22 +1,37 @@
 import express from 'express';
 import { parse, print } from 'graphql';
-import { graphqlQuery, sha256 } from './utils';
+import { version } from '../package.json';
 import { get, set } from './aws';
+import { graphqlQuery, sha256, subgraphError } from './utils';
 
 const router = express.Router();
 
 let cached = 0;
 
 router.get('/', (req, res) => {
-  return res.json({ cached });
+  const commit = process.env.COMMIT_HASH || '';
+  const v = commit ? `${version}#${commit.substr(0, 7)}` : version;
+  res.json({
+    cached,
+    version: v
+  });
 });
 
 router.post('/*', async (req, res) => {
   let url = req.params[0];
+  const { query } = req.body;
+  if (!url) return subgraphError(res, 'No subgraph URL provided');
+  if (!query) return subgraphError(res, 'No query provided');
+
   url = url.startsWith('http') ? url : `https://${url}`;
 
-  const { query } = req.body;
-  const obj = parse(query);
+  let obj: undefined | any;
+  try {
+    obj = parse(query);
+  } catch (error: any) {
+    return subgraphError(res, `Query parse error: ${error.message}`);
+  }
+
   const str = print(obj);
   const key = sha256(`${url}:${str}`);
 
@@ -38,13 +53,17 @@ router.post('/*', async (req, res) => {
     }
   }
 
-  const result = await graphqlQuery(url, str);
+  try {
+    const result = await graphqlQuery(url, str);
+    if (result.errors) return res.status(500).json(result);
+    if (result?.data && caching) set(key, result).then(() => console.log('Cache stored', { key }));
 
-  if (caching) {
-    set(key, result).then(() => console.log('Cache stored', { key }));
+    return res.json(result);
+  } catch (error: any) {
+    // in cases like network error or text response
+    console.log(`subgraphRequest Error: ${error.message}`);
+    return subgraphError(res, `subgraphRequest Error: ${error.message}`);
   }
-
-  return res.json(result);
 });
 
 export default router;

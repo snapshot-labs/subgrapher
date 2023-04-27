@@ -3,6 +3,7 @@ import { parse, print } from 'graphql';
 import { version } from '../package.json';
 import { get, set } from './aws';
 import { graphqlQuery, sha256, subgraphError } from './utils';
+import serve from './helpers/ee';
 
 const router = express.Router();
 
@@ -19,29 +20,36 @@ router.get('/', (req, res) => {
 
 router.post('/*', async (req, res) => {
   let url = req.params[0];
-  const { query } = req.body;
+  let { query } = req.body;
   if (!url) return subgraphError(res, 'No subgraph URL provided');
   if (!query) return subgraphError(res, 'No query provided');
 
   url = url.startsWith('http') ? url : `https://${url}`;
 
-  let obj: undefined | any;
+  let queryObj: undefined | any;
   try {
-    obj = parse(query);
+    queryObj = parse(query);
   } catch (error: any) {
     return subgraphError(res, `Query parse error: ${error.message}`);
   }
 
-  const str = print(obj);
-  const key = sha256(`${url}:${str}`);
+  query = print(queryObj);
+  const key = sha256(`${url}:${query}`);
 
   console.log('Request', { key, url });
 
   // @ts-ignore
-  const caching = obj.definitions[0].selectionSet.selections.every(selection =>
+  const caching = queryObj.definitions[0].selectionSet.selections.every(selection =>
     selection.arguments.some(argument => argument.name.value === 'block')
   );
 
+  const result: any = await serve(key, getData, [url, query, key, caching]);
+  if (result.errors) return res.status(500).json(result);
+
+  return res.json(result);
+});
+
+const getData = async (url: string, query: string, key: string, caching: boolean) => {
   let cache;
   if (caching) {
     cache = await get(key);
@@ -49,21 +57,13 @@ router.post('/*', async (req, res) => {
     if (cache) {
       cached++;
       console.log('Return cache', { key });
-      return res.json(cache);
+      return cache;
     }
   }
+  const result = await graphqlQuery(url, query);
+  if (result?.data && caching) set(key, result).then(() => console.log('Cache stored', { key }));
 
-  try {
-    const result = await graphqlQuery(url, str);
-    if (result.errors) return res.status(500).json(result);
-    if (result?.data && caching) set(key, result).then(() => console.log('Cache stored', { key }));
-
-    return res.json(result);
-  } catch (error: any) {
-    // in cases like network error or text response
-    console.log(`subgraphRequest Error: ${error.message}`);
-    return subgraphError(res, `subgraphRequest Error: ${error.message}`);
-  }
-});
+  return result;
+};
 
 export default router;

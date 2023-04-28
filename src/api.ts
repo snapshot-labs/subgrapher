@@ -36,8 +36,6 @@ router.post('/*', async (req, res) => {
   query = print(queryObj);
   const key = sha256(`${url}:${query}`);
 
-  console.log('Request', { key, url });
-
   // @ts-ignore
   const caching = queryObj.definitions[0].selectionSet.selections.every(selection =>
     selection.arguments.some(argument => argument.name.value === 'block')
@@ -56,12 +54,14 @@ const getData = async (url: string, query: string, key: string, caching: boolean
 
     if (cache) {
       cached++;
-      console.log('Return cache', { key });
       return cache;
     }
   }
   const result = await graphqlQuery(url, query);
-  if (result?.data && caching) set(key, result).then(() => console.log('Cache stored', { key }));
+  if (result?.data && caching)
+    set(key, result)
+      .then(() => console.log('Cache stored', { key }))
+      .catch(console.log);
 
   return result;
 };

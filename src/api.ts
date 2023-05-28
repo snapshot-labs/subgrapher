@@ -58,10 +58,7 @@ const getData = async (url: string, query: string, key: string, caching: boolean
     }
   }
   const result = await graphqlQuery(url, query);
-  if (result?.data && caching)
-    set(key, result)
-      .then(() => console.log('Cache stored', { key }))
-      .catch(console.log);
+  if (result?.data && caching) set(key, result).catch(console.log);
 
   return result;
 };

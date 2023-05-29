@@ -8,6 +8,7 @@ import serve from './helpers/ee';
 const router = express.Router();
 
 let cached = 0;
+const withCache = !!process.env.AWS_REGION;
 
 router.get('/', (req, res) => {
   const commit = process.env.COMMIT_HASH ?? '';
@@ -37,9 +38,10 @@ router.post('/*', async (req, res) => {
   const key = sha256(`${url}:${query}`);
 
   // @ts-ignore
-  const caching = queryObj.definitions[0].selectionSet.selections.every(selection =>
-    selection.arguments.some(argument => argument.name.value === 'block')
-  );
+  const caching =
+    queryObj.definitions[0].selectionSet.selections.every(selection =>
+      selection.arguments.some(argument => argument.name.value === 'block')
+    ) && withCache;
 
   const result: any = await serve(key, getData, [url, query, key, caching]);
   if (result.errors) return res.status(500).json(result);

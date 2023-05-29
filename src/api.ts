@@ -39,9 +39,10 @@ router.post('/*', async (req, res) => {
 
   // @ts-ignore
   const caching =
+    withCache &&
     queryObj.definitions[0].selectionSet.selections.every(selection =>
       selection.arguments.some(argument => argument.name.value === 'block')
-    ) && withCache;
+    );
 
   const result: any = await serve(key, getData, [url, query, key, caching]);
   if (result.errors) return res.status(500).json(result);

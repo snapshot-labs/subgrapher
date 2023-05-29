@@ -2,7 +2,7 @@ import events from 'events';
 import { sha256 } from '../utils';
 
 const eventEmitter = new events.EventEmitter();
-eventEmitter.setMaxListeners(1000); // https://stackoverflow.com/a/26176922
+eventEmitter.setMaxListeners(10000); // https://stackoverflow.com/a/26176922
 
 export default async function serve(id, action, args) {
   const key = sha256(id);

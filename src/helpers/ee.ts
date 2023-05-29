@@ -8,7 +8,6 @@ export default async function serve(id, action, args) {
   const key = sha256(id);
   return new Promise(async resolve => {
     eventEmitter.once(key, data => resolve(data));
-    if (eventEmitter.listenerCount(key) > 999) console.log('EventEmitter Error Max Listeners', key);
     if (eventEmitter.listenerCount(key) === 1) {
       try {
         eventEmitter.emit(key, await action(...args));

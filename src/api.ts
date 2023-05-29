@@ -10,8 +10,8 @@ const router = express.Router();
 let cached = 0;
 
 router.get('/', (req, res) => {
-  const commit = process.env.COMMIT_HASH || '';
-  const v = commit ? `${version}#${commit.substr(0, 7)}` : version;
+  const commit = process.env.COMMIT_HASH ?? '';
+  const v = commit ? `${version}#${commit.substring(0, 7)}` : version;
   res.json({
     cached,
     version: v

@@ -7,14 +7,12 @@ import serve from './helpers/ee';
 
 const router = express.Router();
 
-let cached = 0;
 const withCache = !!process.env.AWS_REGION;
 
 router.get('/', (req, res) => {
   const commit = process.env.COMMIT_HASH ?? '';
   const v = commit ? `${version}#${commit.substring(0, 7)}` : version;
   res.json({
-    cached,
     version: v
   });
 });
@@ -56,7 +54,6 @@ const getData = async (url: string, query: string, key: string, caching: boolean
     cache = await get(key);
 
     if (cache) {
-      cached++;
       return cache;
     }
   }

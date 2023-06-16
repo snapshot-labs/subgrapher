@@ -6,8 +6,6 @@ export function sha256(str) {
 }
 
 export async function graphqlQuery(url: string, query) {
-  console.log('Querying', url);
-  console.log('Query', query);
   const res = await fetch(url, {
     method: 'POST',
     headers: {

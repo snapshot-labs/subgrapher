@@ -42,6 +42,8 @@ router.post('/*', async (req, res) => {
       selection.arguments.some(argument => argument.name.value === 'block')
     );
 
+  if(!caching) return res.status(500).json({ errors: [{ message: 'latest block is disabled for now' }]);
+
   const result: any = await serve(key, getData, [url, query, key, caching]);
   if (result.errors) return res.status(500).json(result);
 

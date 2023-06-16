@@ -41,9 +41,12 @@ router.post('/*', async (req, res) => {
     queryObj.definitions[0].selectionSet.selections.every(selection =>
       selection.arguments.some(argument => argument.name.value === 'block')
     );
-  
+
   const result: any = await serve(key, getData, [url, query, key, caching]);
-  if (result.errors) return res.status(500).json(result);
+  if (result.errors) {
+    console.log(result.errors);
+    return res.status(500).json(result);
+  }
 
   return res.json(result);
 });

@@ -3,7 +3,7 @@ import { parse, print } from 'graphql';
 import { version } from '../package.json';
 import { get, set } from './aws';
 import { graphqlQuery, sha256, subgraphError } from './utils';
-import serve from './helpers/ee';
+import serve from './helpers/requestDeduplicator';
 
 const router = express.Router();
 

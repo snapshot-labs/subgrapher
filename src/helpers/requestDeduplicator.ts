@@ -5,7 +5,7 @@ export default async function serve(key, action, args) {
     const requestPromise = action(...args)
       .then(result => {
         ongoingRequests.delete(key);
-        return { data: result };
+        return result;
       })
       .catch(error => {
         console.log('EventEmitter Error', error);

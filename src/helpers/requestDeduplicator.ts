@@ -1,6 +1,6 @@
 const ongoingRequests = new Map();
 
-export default async function serve(key, action, args) {
+export default function serve(key, action, args) {
   if (!ongoingRequests.has(key)) {
     const requestPromise = action(...args)
       .then(result => {
@@ -8,7 +8,7 @@ export default async function serve(key, action, args) {
         return result;
       })
       .catch(error => {
-        console.log('EventEmitter Error', error);
+        console.log('[requestDeduplicator] request error', error);
         ongoingRequests.delete(key);
         throw { errors: [{ message: error.message }] };
       });

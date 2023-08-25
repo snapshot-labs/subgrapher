@@ -11,7 +11,7 @@ export default function serve(key, action, args) {
       .finally(() => {
         ongoingRequests.delete(key);
       });
-  
+
     ongoingRequests.set(key, requestPromise);
   }
 

@@ -41,14 +41,16 @@ router.post('/*', async (req, res) => {
     queryObj.definitions[0].selectionSet.selections.every(selection =>
       selection.arguments.some(argument => argument.name.value === 'block')
     );
-
-  const result: any = await serve(key, getData, [url, query, key, caching]);
-  if (result.errors) {
-    console.log(result.errors);
-    return res.status(500).json(result);
+  try {
+    const result: any = await serve(key, getData, [url, query, key, caching]);
+    if (result.errors) {
+      console.log(result.errors);
+      return res.status(500).json(result);
+    }
+    return res.json(result);
+  } catch (error: any) {
+    return subgraphError(res, error.message || 'Unknown error');
   }
-
-  return res.json(result);
 });
 
 const getData = async (url: string, query: string, key: string, caching: boolean) => {

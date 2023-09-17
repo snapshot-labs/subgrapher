@@ -4,6 +4,7 @@ import { version } from '../package.json';
 import { get, set } from './aws';
 import { graphqlQuery, sha256, subgraphError } from './utils';
 import serve from './helpers/requestDeduplicator';
+import { capture } from '@snapshot-labs/snapshot-sentry';
 
 const router = express.Router();
 
@@ -44,7 +45,7 @@ router.post('/*', async (req, res) => {
   try {
     const result: any = await serve(key, getData, [url, query, key, caching]);
     if (result.errors) {
-      console.log(result.errors);
+      capture(result);
       return res.status(500).json(result);
     }
     return res.json(result);
@@ -63,7 +64,7 @@ const getData = async (url: string, query: string, key: string, caching: boolean
     }
   }
   const result = await graphqlQuery(url, query);
-  if (result?.data && caching) set(key, result).catch(console.log);
+  if (result?.data && caching) set(key, result).catch(capture);
 
   return result;
 };

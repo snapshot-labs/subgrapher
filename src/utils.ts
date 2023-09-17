@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
 import { createHash } from 'crypto';
+import { capture } from '@snapshot-labs/snapshot-sentry';
 
 export function sha256(str) {
   return createHash('sha256').update(str).digest('hex');
@@ -18,7 +19,7 @@ export async function graphqlQuery(url: string, query) {
   try {
     responseData = JSON.parse(responseData);
   } catch (e) {
-    console.log('Text response:', responseData);
+    capture(e);
     throw new Error(`Text response: ${responseData}`);
   }
   return responseData;

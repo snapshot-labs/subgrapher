@@ -3,11 +3,13 @@ import cors from 'cors';
 import express from 'express';
 import { initLogger, fallbackLogger } from '@snapshot-labs/snapshot-sentry';
 import api from './api';
+import initMetrics from './helpers/metrics';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 initLogger(app);
+initMetrics(app);
 
 app.disable('x-powered-by');
 app.use(express.json({ limit: '4mb' }));

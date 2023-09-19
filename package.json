@@ -14,6 +14,7 @@
   "prettier": "@snapshot-labs/prettier-config",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.75.0",
+    "@snapshot-labs/snapshot-metrics": "^1.2.0",
     "@snapshot-labs/snapshot-sentry": "^1.4.0",
     "cors": "^2.8.5",
     "cross-fetch": "^3.1.5",

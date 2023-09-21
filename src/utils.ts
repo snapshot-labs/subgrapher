@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch';
+import fetch from 'node-fetch';
 import { createHash } from 'crypto';
 import { capture } from '@snapshot-labs/snapshot-sentry';
 

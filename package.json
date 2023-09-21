@@ -17,10 +17,10 @@
     "@snapshot-labs/snapshot-metrics": "^1.2.0",
     "@snapshot-labs/snapshot-sentry": "^1.4.0",
     "cors": "^2.8.5",
-    "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "graphql": "^16.6.0",
+    "node-fetch": "^1.7.0",
     "nodemon": "^2.0.19",
     "ts-node": "^10.8.1",
     "typescript": "^4.9.3"

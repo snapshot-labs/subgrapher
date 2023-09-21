@@ -5,6 +5,7 @@ import { get, set } from './aws';
 import { graphqlQuery, sha256, subgraphError } from './utils';
 import serve from './helpers/requestDeduplicator';
 import { capture } from '@snapshot-labs/snapshot-sentry';
+import { cacheHitCount } from './helpers/metrics';
 
 const router = express.Router();
 
@@ -60,8 +61,11 @@ const getData = async (url: string, query: string, key: string, caching: boolean
     cache = await get(key);
 
     if (cache) {
+      cacheHitCount.inc({ status: 'HIT' });
       return cache;
     }
+
+    cacheHitCount.inc({ status: 'MISS' });
   }
   const result = await graphqlQuery(url, query);
   if (result?.data && caching) set(key, result).catch(capture);

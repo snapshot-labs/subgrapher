@@ -14,6 +14,7 @@ export async function graphqlQuery(url: string, query) {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     },
+    timeout: 30e3,
     body: JSON.stringify({ query })
   });
   let responseData: any = await res.text();

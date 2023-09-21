@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import https from 'node:https';
 import { createHash } from 'crypto';
 import { capture } from '@snapshot-labs/snapshot-sentry';
 
@@ -7,7 +8,7 @@ export function sha256(str) {
 }
 
 export async function graphqlQuery(url: string, query) {
-  const res = await fetch(url, {
+  const res = await fetchWithKeepAlive(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -28,3 +29,8 @@ export async function graphqlQuery(url: string, query) {
 export function subgraphError(res, error: null | string = null) {
   return res.status(500).json({ errors: [{ message: error }] });
 }
+
+const httpsAgent = new https.Agent({ keepAlive: true });
+const fetchWithKeepAlive = (uri: any, options: any = {}) => {
+  return fetch(uri, { agent: httpsAgent, ...options });
+};

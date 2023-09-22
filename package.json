@@ -8,7 +8,9 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
-    "start": "node dist/src/index.js"
+    "start": "node dist/src/index.js",
+    "test": "PORT=3003 start-server-and-test 'yarn dev' 3003 'yarn jest --runInBand test/e2e/'",
+    "test:watch": "PORT=3003 start-server-and-test 'yarn dev' 3003 'yarn jest --watch --runInBand --collectCoverage=false test/e2e/'"
   },
   "eslintConfig": {
     "extends": "@snapshot-labs"
@@ -23,7 +25,6 @@
     "express": "^4.18.1",
     "graphql": "^16.6.0",
     "node-fetch": "^1.7.0",
-    "nodemon": "^2.0.19",
     "ts-node": "^10.8.1",
     "typescript": "^4.9.3"
   },
@@ -31,8 +32,15 @@
     "@snapshot-labs/eslint-config": "^0.1.0-beta.11",
     "@snapshot-labs/prettier-config": "^0.1.0-beta.7",
     "@types/express": "^4.17.11",
+    "@types/jest": "^29.5.5",
     "@types/node": "^18.11.6",
     "eslint": "^8.28.0",
-    "prettier": "^2.8.0"
+    "jest": "^29.7.0",
+    "jest-environment-node-single-context": "^29.1.0",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.8.0",
+    "start-server-and-test": "^2.0.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1"
   }
 }

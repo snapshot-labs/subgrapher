@@ -2,6 +2,7 @@
 node_modules
 dist
 .env
+coverage
 
 # Remove some common IDE working directories
 .idea

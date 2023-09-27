@@ -7,7 +7,11 @@ on:
 
 jobs:
   create-sentry-release:
+    strategy:
+      matrix:
+        target: ['18']
     uses: snapshot-labs/actions/.github/workflows/create-sentry-release.yml@main
     with:
       project: subgrapher
+      target: ${{ matrix.target }}
     secrets: inherit

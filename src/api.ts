@@ -46,7 +46,7 @@ router.post('/*', async (req, res) => {
   try {
     const result: any = await serve(key, getData, [url, query, key, caching]);
     if (result.errors) {
-      capture(result);
+      capture(new Error('GraphQl error'), result.errors);
       return res.status(500).json(result);
     }
     return res.json(result);

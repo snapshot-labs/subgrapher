@@ -13,7 +13,7 @@ describe('api', () => {
       it('should return a 200', async () => {
         const response = await request(HOST)
           .post(
-            '/gateway.thegraph.com/api/0f15b42bdeff7a063a4e1757d7e2f99e/deployments/id/QmXZiV6S13ha6QXq4dmaM3TB4CHcDxBMvGexSNu9Kc28EH'
+            '/gateway-arbitrum.network.thegraph.com/api/0f15b42bdeff7a063a4e1757d7e2f99e/subgraphs/id/4YgtogVaqoM8CErHWDK8mKQ825BcVdKB8vBYmb4avAQo'
           )
           .send(payload);
 
@@ -35,7 +35,7 @@ describe('api', () => {
     describe('on error', () => {
       it('should return a 400 on malformed query', async () => {
         const response = await request(HOST).post(
-          '/gateway.thegraph.com/api/0f15b42bdeff7a063a4e1757d7e2f99e/deployments/id/QmXZiV6S13ha6QXq4dmaM3TB4CHcDxBMvGexSNu9Kc28EH'
+          '/gateway-arbitrum.network.thegraph.com/api/0f15b42bdeff7a063a4e1757d7e2f99e/subgraphs/id/4YgtogVaqoM8CErHWDK8mKQ825BcVdKB8vBYmb4avAQo'
         );
 
         expect(response.statusCode).toBe(500);

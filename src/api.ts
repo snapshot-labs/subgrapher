@@ -22,16 +22,16 @@ router.get('/', (req, res) => {
 router.post('/*', async (req, res) => {
   let url = req.params[0];
   let { query } = req.body;
-  if (!url) return subgraphError(res, 'No subgraph URL provided');
-  if (!query) return subgraphError(res, 'No query provided');
+  if (!url) return subgraphError(res, 'No subgraph URL provided', 400);
+  if (!query) return subgraphError(res, 'No query provided', 400);
 
   url = url.startsWith('http') ? url : `https://${url}`;
 
-  let queryObj: undefined | any;
+  let queryObj: any;
   try {
     queryObj = parse(query);
   } catch (error: any) {
-    return subgraphError(res, `Query parse error: ${error.message}`);
+    return subgraphError(res, `Query parse error: ${error.message}`, 400);
   }
 
   query = print(queryObj);
@@ -47,10 +47,13 @@ router.post('/*', async (req, res) => {
     const result: any = await serve(key, getData, [url, query, key, caching]);
     if (result.errors) {
       capture(new Error('GraphQl error'), result.errors);
-      return res.status(500).json(result);
+      return res.status(400).json(result);
     }
     return res.json(result);
   } catch (error: any) {
+    if (error.errors) {
+      return res.status(500).json(error);
+    }
     return subgraphError(res, error.message || 'Unknown error');
   }
 });

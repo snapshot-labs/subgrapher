@@ -47,14 +47,11 @@ router.post('/*', async (req, res) => {
     const result: any = await serve(key, getData, [url, query, key, caching]);
     if (result.errors) {
       capture(new Error('GraphQl error'), result.errors);
-      return res.status(400).json(result);
+      return subgraphError(res, result, 400);
     }
     return res.json(result);
   } catch (error: any) {
-    if (error.errors) {
-      return res.status(500).json(error);
-    }
-    return subgraphError(res, error.message || 'Unknown error');
+    return subgraphError(res, error);
   }
 });
 

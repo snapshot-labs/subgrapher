@@ -32,7 +32,7 @@ export async function graphqlQuery(url: string, query) {
   return responseData;
 }
 
-export function subgraphError(res, error: any = null, code = 500) {
+export function subgraphError(res, error: any = 'Unknown error', code = 500) {
   return res.status(code).json(error?.errors ? error : { errors: [{ message: error }] });
 }
 

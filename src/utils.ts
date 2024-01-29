@@ -32,8 +32,8 @@ export async function graphqlQuery(url: string, query) {
   return responseData;
 }
 
-export function subgraphError(res, error: null | string = null, code = 500) {
-  return res.status(code).json({ errors: [{ message: error }] });
+export function subgraphError(res, error: any = null, code = 500) {
+  return res.status(code).json(error?.errors ? error : { errors: [{ message: error }] });
 }
 
 const httpsAgent = new https.Agent({ keepAlive: true });

@@ -21,14 +21,19 @@ export async function graphqlQuery(url: string, query) {
   try {
     responseData = JSON.parse(responseData);
   } catch (e) {
-    capture(e);
-    throw new Error(`Text response: ${responseData}`);
+    capture({ error: { code: res.status, message: res.statusText } }, { url });
+
+    if (!res.ok) {
+      throw new Error(`Unable to connect to ${url}, code: ${res.status}`);
+    } else {
+      throw new Error(`Text response: ${responseData}`);
+    }
   }
   return responseData;
 }
 
-export function subgraphError(res, error: null | string = null) {
-  return res.status(500).json({ errors: [{ message: error }] });
+export function subgraphError(res, error: any = 'Unknown error', code = 500) {
+  return res.status(code).json(error?.errors ? error : { errors: [{ message: error }] });
 }
 
 const httpsAgent = new https.Agent({ keepAlive: true });

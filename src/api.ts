@@ -2,7 +2,7 @@ import express from 'express';
 import { parse, print } from 'graphql';
 import { version } from '../package.json';
 import { get, set } from './aws';
-import { graphqlQuery, sha256, subgraphError } from './utils';
+import { buildURL, graphqlQuery, sha256, subgraphError } from './utils';
 import serve from './helpers/requestDeduplicator';
 import { capture } from '@snapshot-labs/snapshot-sentry';
 import { cacheHitCount } from './helpers/metrics';
@@ -25,8 +25,7 @@ router.post('/*', async (req, res) => {
   if (!url) return subgraphError(res, 'No subgraph URL provided', 400);
   if (!query) return subgraphError(res, 'No query provided', 400);
 
-  url = url.startsWith('http') ? url : `https://${url}`;
-
+  url = buildURL(url);
   let queryObj: any;
   try {
     queryObj = parse(query);

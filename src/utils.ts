@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import https from 'node:https';
 import { createHash } from 'crypto';
 import { capture } from '@snapshot-labs/snapshot-sentry';
+import delegationSubgraphs from './helpers/delegationSubgraphs';
 
 export function sha256(str) {
   return createHash('sha256').update(str).digest('hex');
@@ -40,3 +41,12 @@ const httpsAgent = new https.Agent({ keepAlive: true });
 const fetchWithKeepAlive = (uri: any, options: any = {}) => {
   return fetch(uri, { agent: httpsAgent, ...options });
 };
+
+export function buildURL(url: string): string {
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('delegation')) {
+    const network = url.split('/')[1];
+    if (network && delegationSubgraphs[network]) return delegationSubgraphs[network];
+  }
+  return `https://${url}`;
+}

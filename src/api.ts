@@ -24,8 +24,11 @@ router.post('/*', async (req, res) => {
   let { query } = req.body;
   if (!url) return subgraphError(res, 'No subgraph URL provided', 400);
   if (!query) return subgraphError(res, 'No query provided', 400);
-
-  url = buildURL(url);
+  try {
+    url = buildURL(url);
+  } catch (error: any) {
+    return subgraphError(res, error.message, 400);
+  }
   let queryObj: any;
   try {
     queryObj = parse(query);

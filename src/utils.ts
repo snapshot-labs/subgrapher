@@ -47,6 +47,7 @@ export function buildURL(url: string): string {
   if (url.startsWith('delegation')) {
     const network = url.split('/')[1];
     if (network && delegationSubgraphs[network]) return delegationSubgraphs[network];
+    if (network && !delegationSubgraphs[network]) throw new Error('Invalid network');
   }
   return `https://${url}`;
 }

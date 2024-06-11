@@ -9,7 +9,9 @@
     "build": "tsc",
     "dev": "nodemon src/index.ts",
     "start": "node dist/src/index.js",
-    "test": "PORT=3003 start-server-and-test 'yarn dev' 3003 'yarn jest --runInBand test/e2e/'",
+    "test": "PORT=3003 start-server-and-test 'yarn dev' 3003 'yarn jest --runInBand test/e2e/' && yarn test:unit",
+    "test:unit": "jest --runInBand --collectCoverage=false test/unit",
+    "test:unit:watch": "jest --watch --runInBand --collectCoverage=false test/unit",
     "test:watch": "PORT=3003 start-server-and-test 'yarn dev' 3003 'yarn jest --watch --runInBand --collectCoverage=false test/e2e/'"
   },
   "eslintConfig": {

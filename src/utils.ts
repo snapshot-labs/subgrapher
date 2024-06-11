@@ -3,6 +3,7 @@ import https from 'node:https';
 import { createHash } from 'crypto';
 import { capture } from '@snapshot-labs/snapshot-sentry';
 import delegationSubgraphs from './helpers/delegationSubgraphs';
+import upgradedSubgraphs from './helpers/upgradedSubgraphs';
 
 export function sha256(str) {
   return createHash('sha256').update(str).digest('hex');
@@ -43,11 +44,19 @@ const fetchWithKeepAlive = (uri: any, options: any = {}) => {
 };
 
 export function buildURL(url: string): string {
-  if (url.startsWith('http')) return url;
+  if (url.startsWith('http')) throw new Error('Invalid subgraph');
   if (url.startsWith('delegation')) {
     const network = url.split('/')[1];
+    if (!network) throw new Error('Invalid network');
     if (network && delegationSubgraphs[network]) return delegationSubgraphs[network];
     if (network && !delegationSubgraphs[network]) throw new Error('Invalid network');
   }
-  return `https://${url}`;
+  if (url.startsWith('subgraph')) {
+    const network = url.split('/')[1];
+    if (!network || !upgradedSubgraphs[network]) throw new Error('Invalid network');
+    const subgraph = url.split('/')[2];
+    if (!subgraph) throw new Error('Invalid subgraph');
+    return upgradedSubgraphs[network] + subgraph;
+  }
+  throw new Error('Invalid subgraph');
 }

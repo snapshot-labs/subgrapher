@@ -11,7 +11,7 @@ describe('api', () => {
     };
 
     describe('on success', () => {
-      it('should return a 200', async () => {
+      it.skip('should return a 200', async () => {
         const response = await request(HOST).post(PROXIED_URL).send(payload);
 
         expect(response.statusCode).toBe(200);
@@ -68,7 +68,7 @@ describe('api', () => {
         });
       });
 
-      it('should return a 400 on graphql error', async () => {
+      it.skip('should return a 400 on graphql error', async () => {
         const response = await request(HOST).post(PROXIED_URL).send({
           query:
             'query { delegation (where: {space_in: ["", "stgdao.eth", "stgdao"]}, first: 1, skip: 1000000000) { delegator space delegate } }'

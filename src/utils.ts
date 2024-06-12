@@ -9,7 +9,7 @@ export function sha256(str) {
   return createHash('sha256').update(str).digest('hex');
 }
 
-export async function graphqlQuery(url: string, query) {
+export async function graphqlQuery(url: string, query, variables = {}) {
   const res = await fetchWithKeepAlive(url, {
     method: 'POST',
     headers: {
@@ -17,7 +17,7 @@ export async function graphqlQuery(url: string, query) {
       'Content-Type': 'application/json'
     },
     timeout: 30e3,
-    body: JSON.stringify({ query })
+    body: JSON.stringify({ query, variables })
   });
   let responseData: any = await res.text();
   try {

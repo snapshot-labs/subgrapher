@@ -22,6 +22,7 @@ router.get('/', (req, res) => {
 router.post('/*', async (req, res) => {
   let url = req.params[0];
   let { query } = req.body;
+  const { variables = {} } = req.body;
   if (!url) return subgraphError(res, 'No subgraph URL provided', 400);
   if (!query) return subgraphError(res, 'No query provided', 400);
   try {
@@ -37,7 +38,7 @@ router.post('/*', async (req, res) => {
   }
 
   query = print(queryObj);
-  const key = sha256(`${url}:${query}`);
+  const key = sha256(`${url}:${query}:${JSON.stringify(variables)}`);
 
   // @ts-ignore
   const caching =
@@ -46,7 +47,7 @@ router.post('/*', async (req, res) => {
       selection.arguments.some(argument => argument.name.value === 'block')
     );
   try {
-    const result: any = await serve(key, getData, [url, query, key, caching]);
+    const result: any = await serve(key, getData, [url, query, variables, key, caching]);
     if (result.errors) {
       capture(new Error('GraphQl error'), result.errors);
       return subgraphError(res, result, 400);
@@ -57,7 +58,13 @@ router.post('/*', async (req, res) => {
   }
 });
 
-const getData = async (url: string, query: string, key: string, caching: boolean) => {
+const getData = async (
+  url: string,
+  query: string,
+  variables = {},
+  key: string,
+  caching: boolean
+) => {
   let cache;
   if (caching) {
     cache = await get(key);
@@ -69,7 +76,7 @@ const getData = async (url: string, query: string, key: string, caching: boolean
 
     cacheHitCount.inc({ status: 'MISS' });
   }
-  const result = await graphqlQuery(url, query);
+  const result = await graphqlQuery(url, query, variables);
   if (result?.data && caching) set(key, result).catch(capture);
 
   return result;

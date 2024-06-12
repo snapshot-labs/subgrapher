@@ -38,7 +38,10 @@ router.post('/*', async (req, res) => {
   }
 
   query = print(queryObj);
-  const key = sha256(`${url}:${query}:${JSON.stringify(variables)}`);
+  const key =
+    variables && Object.keys(variables).length > 0
+      ? sha256(`${url}:${query}:${JSON.stringify(variables)}`)
+      : sha256(`${url}:${query}`);
 
   // @ts-ignore
   const caching =

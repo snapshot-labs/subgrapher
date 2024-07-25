@@ -1,11 +1,11 @@
+import { capture } from '@snapshot-labs/snapshot-sentry';
 import express from 'express';
 import { parse, print } from 'graphql';
-import { version } from '../package.json';
 import { get, set } from './aws';
-import { buildURL, graphqlQuery, sha256, subgraphError } from './utils';
-import serve from './helpers/requestDeduplicator';
-import { capture } from '@snapshot-labs/snapshot-sentry';
 import { cacheHitCount } from './helpers/metrics';
+import serve from './helpers/requestDeduplicator';
+import { buildURL, graphqlQuery, sha256, subgraphError } from './utils';
+import { version } from '../package.json';
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
-import fetch from 'node-fetch';
-import https from 'node:https';
 import { createHash } from 'crypto';
+import https from 'node:https';
 import { capture } from '@snapshot-labs/snapshot-sentry';
+import fetch from 'node-fetch';
 import delegationSubgraphs from './helpers/delegationSubgraphs';
 import upgradedSubgraphs from './helpers/upgradedSubgraphs';
 

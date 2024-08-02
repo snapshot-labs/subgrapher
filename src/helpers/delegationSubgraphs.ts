@@ -8,6 +8,7 @@ export default {
   '100': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/2XuuZyGrxw72keXKfeHQW7yaGqVa7dyoghkgdGMdC6Az`,
   '137': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/7ynRuH2PPw975dtHkthpZCyQGKBCrxFA8VsYD3KE631B`,
   '250': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/szZ3FWewDGHtpeZzf6uQ5dxPY68JNfrGPoWqBXwtBXR`,
+  '8453': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/9qxDXD1SNnZriMMkCRVAmSdsv4KP6Xvnr8U2CRc5HQWh`,
   '42161': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/HuLBhuKuknXEEUmVmKR8Lsmpi5h1SfNLGcaa1e9tWyMG`,
   '11155111': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/2SZVRR6G8txMFtf39aw2aP7BTAawRVwgqHeQXMhr7BRJ`
 };

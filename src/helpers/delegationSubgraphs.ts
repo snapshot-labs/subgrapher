@@ -12,5 +12,6 @@ export default {
   '42161': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/HuLBhuKuknXEEUmVmKR8Lsmpi5h1SfNLGcaa1e9tWyMG`,
   '59144': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/5KsUhS8E9xQUu6szt9PUNuUbzJ73C4vi7yQuxFUzmRt4`,
   '81457': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/EtHGr4ekkZkP81yfL2yQEyHqhyBa4nShASoSnjCUgvQd`,
+  '84532': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/CdxACSJVLsvfQXRmGYGGM1F93LTkk6VA8anBsxdjJWXn`,
   '11155111': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/2SZVRR6G8txMFtf39aw2aP7BTAawRVwgqHeQXMhr7BRJ`
 };

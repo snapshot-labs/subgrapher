@@ -9,7 +9,8 @@ export default {
   '137': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/7ynRuH2PPw975dtHkthpZCyQGKBCrxFA8VsYD3KE631B`,
   '146': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/3VUpuJv8J7kdvEMd6ymD1XszpGNQiTjK5oGAnmS3C2Bb`,
   '250': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/szZ3FWewDGHtpeZzf6uQ5dxPY68JNfrGPoWqBXwtBXR`,
-  '5000': 'https://subgraph-api.mantle.xyz/api/public/54a96b6a-f1f4-4124-bf71-17207d243f94/subgraphs/snapshot-labs/snapshot-mantle/v0.0.1/gn',
+  '5000':
+    'https://subgraph-api.mantle.xyz/api/public/54a96b6a-f1f4-4124-bf71-17207d243f94/subgraphs/snapshot-labs/snapshot-mantle/v0.0.1/gn',
   '8453': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/9qxDXD1SNnZriMMkCRVAmSdsv4KP6Xvnr8U2CRc5HQWh`,
   '42161': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/HuLBhuKuknXEEUmVmKR8Lsmpi5h1SfNLGcaa1e9tWyMG`,
   '59144': `https://gateway-arbitrum.network.thegraph.com/api/${SUBGRAPH_KEY}/subgraphs/id/5KsUhS8E9xQUu6szt9PUNuUbzJ73C4vi7yQuxFUzmRt4`,
